@@ -105,7 +105,7 @@ class FileHandler(AbstractFileHandler):
     
     def get_full_path(self):
         return (self.get_path() / self.get_full_filename()).absolute()
-    
+
 
 if __name__ == '__main__':
     pass

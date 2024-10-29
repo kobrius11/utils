@@ -1,6 +1,7 @@
 from typing import Protocol
 from abc import ABC, abstractmethod
-
+from pathlib import Path
+from .file_handler_buidler import AbstracFileBuilder
 
 class Writable(Protocol):
     def write(self):
@@ -46,6 +47,51 @@ class AbstractFileHandler(ABC, Readable, Writable):
     
 
 class FileHandler(AbstractFileHandler):
+    
+    
+    class Builder(AbstracFileBuilder):
+        def __init__(self) -> None:
+            self.__path = Path('./output')
+            self.__filename = 'output'
+            self.__extension = ''
+            self.__content = ''
+            self.__encoding = None
+            self.__newline = None
+            
+        def set_path(self, path: Path):
+            self.__path = path
+            return self
+        
+        def set_filename(self, filename: str):
+            self.__filename = filename
+            return self
+        
+        def set_extension(self, extension: str):
+            self.__extension = extension
+            return self
+        
+        def set_content(self, content):
+            self.__content = content
+            return self
+        
+        def set_encoding(self, encoding: str):
+            self.__encoding = encoding
+            return self
+        
+        def set_newline(self, newline: str):
+            self.__newline = newline
+            return self
+
+        def build(self) -> "FileHandler":
+            return FileHandler(
+                self.__path,
+                self.__filename,
+                self.__extension,
+                self.__content,
+                self.__encoding,
+                self.__newline
+            )
+    
     def __init__(
         self,
         path,
@@ -105,6 +151,11 @@ class FileHandler(AbstractFileHandler):
     
     def get_full_path(self):
         return (self.get_path() / self.get_full_filename()).absolute()
+    
+    @classmethod
+    @property
+    def builder(cls):
+        return cls.Builder()
 
 
 if __name__ == '__main__':

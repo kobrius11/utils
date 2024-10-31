@@ -1,7 +1,8 @@
-from typing import Protocol
+from typing import Protocol, Any
 from abc import ABC, abstractmethod
 from pathlib import Path
 from .file_handler_buidler import AbstracFileBuilder
+from ..decorators import classproperty
 
 class Writable(Protocol):
     def write(self):
@@ -44,10 +45,26 @@ class AbstractFileHandler(ABC, Readable, Writable):
     @abstractmethod
     def get_full_path(self):
         raise NotImplementedError("")
-    
+
 
 class FileHandler(AbstractFileHandler):
     
+    def __init__(
+        self,
+        path,
+        filename,
+        extension,
+        content,
+        encoding,
+        newline
+    ):
+        self.__path = path
+        self.__filename = filename
+        self.__extension = extension
+        self.__content = content
+        self.__encoding = encoding
+        self.__newline = newline
+
     
     class Builder(AbstracFileBuilder):
         def __init__(self) -> None:
@@ -92,23 +109,10 @@ class FileHandler(AbstractFileHandler):
                 self.__newline
             )
     
-    def __init__(
-        self,
-        path,
-        filename,
-        extension,
-        content,
-        encoding,
-        newline
-    ):
-        self.__path = path
-        self.__filename = filename
-        self.__extension = extension
-        self.__content = content
-        self.__encoding = encoding
-        self.__newline = newline
-
     def write(self):
+        output_dir = self.get_path()
+        output_dir.mkdir(parents=True, exist_ok=True)
+
         with open(
             file=self.get_full_path(),
             mode='w',
@@ -121,7 +125,7 @@ class FileHandler(AbstractFileHandler):
     def read(self):
         with open(
             file=self.get_full_path(),
-            mode='w',
+            mode='r',
             encoding=self.get_encoding(),
             newline=self.__newline
         ) as f:
@@ -152,8 +156,7 @@ class FileHandler(AbstractFileHandler):
     def get_full_path(self):
         return (self.get_path() / self.get_full_filename()).absolute()
     
-    @classmethod
-    @property
+    @classproperty
     def builder(cls):
         return cls.Builder()
 

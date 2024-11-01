@@ -10,7 +10,7 @@ class Salt():
 
     @classmethod
     def create_salt(cls, k):
-        return cls(k)._get_salt().__str__()
+        return cls(k)._get_salt()
     
     def _get_salt(self):
         chars = ascii_letters + digits + punctuation.replace("'", '').replace('"', '')

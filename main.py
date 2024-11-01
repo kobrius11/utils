@@ -1,6 +1,6 @@
 import sys
 
-from src.generic import FileHandler, Salt
+from src.generic import FileHandler, Salt, HashFactory, HashEnum
 
 
 if __name__ == "__main__":
@@ -13,5 +13,9 @@ if __name__ == "__main__":
     #         .build()
     # ).write()
 
-    print(Salt.create_salt(k=30))
-    
+    # test = Salt.create_salt(k=30)
+    # print(test)
+
+    has = HashFactory.create_hash(HashEnum.MD5, "12322112233")
+    print(has)
+

@@ -30,4 +30,4 @@ class Url(metaclass=PrivateConstructor):
         return cls._create(url_params.schema, url_params.port, url_params.host, url_params.path, url_params.query)
     
     def __str__(self):
-        return "".join(self.__schema, self.__host, self.__path, self.__query)
+        return f"{self.__schema}://{self.__host}/{self.__path}"

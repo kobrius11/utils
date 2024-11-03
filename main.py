@@ -2,10 +2,20 @@ import sys
 from pprint import pprint
 
 from src.generic import FileHandler, Salt, HashFactory, HashEnum
+from src.request import Headers
+from src.db import DBControler
 import requests
+from src.generic import Url, UrlParams
 
+DBNAME = "users"
 
-
+# db = (
+#     DBControler()
+#         .connect_db(DBNAME)
+#         .create_table(DBNAME, ["username PRIMARY KEY", "password"])
+#         .insert(DBNAME, ["user", "25f9e794323b453885f5181f1b624d0b"])
+#         .close()
+# )
 
 if __name__ == "__main__":
     # file = (
@@ -20,8 +30,19 @@ if __name__ == "__main__":
     # test = Salt.create_salt(k=30)
     # print(test)
 
-    has = HashFactory.create_hash(HashEnum.MD5, "1234567891")
-    print(has)
+    url_params = UrlParams(
+        host="127.0.0.1:8000",
+        schema="http",
+        port=80,
+        path="login"
+    )
+    url = Url.create_url(url_params)
 
-    r = requests.get("http://127.0.0.1:8000/", params={"x": 3, "y":5}, headers={'Login-Request': str(has)})
-    pprint(r.json())
+    password_hash = HashFactory.create_hash(HashEnum.MD5, "123456789")
+
+    headers = Headers()
+    headers["username"] = str("user")
+    headers["password"] = str(password_hash)
+
+    r = requests.get(str(url), headers=headers)
+    pprint(r.content)

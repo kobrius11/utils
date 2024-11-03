@@ -39,6 +39,9 @@ class Headers:
         return self._attributes[key]
     
     def __setitem__(self, key, value):
-        if key not in self._attributes:
-            raise KeyError(f"UNDEFINED KEY: key not in {self._attributes.keys()}")
+        # if key not in self._attributes:
+        #     raise KeyError(f"UNDEFINED KEY: key not in {self._attributes.keys()}")
         self._attributes[key] = value
+
+    def items(self):
+        return self._attributes.items()

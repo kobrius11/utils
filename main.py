@@ -3,7 +3,6 @@ from pprint import pprint
 
 from src.generic import FileHandler, Salt, HashFactory, HashEnum
 from src.request import Headers
-from src.db import DBControler
 import requests
 from src.generic import Url, UrlParams
 
@@ -34,7 +33,7 @@ if __name__ == "__main__":
         host="127.0.0.1:8000",
         schema="http",
         port=80,
-        path="login"
+        path="todos"
     )
     url = Url.create_url(url_params)
 

@@ -4,7 +4,9 @@ from pprint import pprint
 from src.generic import FileHandler, Salt, HashFactory, HashEnum
 from src.request import Headers
 import requests
-from src.generic import Url, UrlParams
+from src.generic import HttpUrl, UrlParams
+
+from src.db.service import TodoService
 
 DBNAME = "users"
 
@@ -30,12 +32,13 @@ if __name__ == "__main__":
     # print(test)
 
     url_params = UrlParams(
-        host="127.0.0.1:8000",
-        schema="http",
-        port=80,
-        path="todos"
+        host="www.google.com",
+        schema="https",
+        port=443,
+        path="",
+        query=""
     )
-    url = Url.create_url(url_params)
+    url = HttpUrl.try_create_url(url_params)
 
     password_hash = HashFactory.create_hash(HashEnum.MD5, "123456789")
 

@@ -17,7 +17,7 @@ class TodoModel(TodoModelProt):
     def __init__(self, controller: "TodoController", todo_service: "TodoService"):
         self.__controller = controller
         controller.model = self
-        self.__todo_service = todo_service
+        self.todo_service = todo_service
         self.__todos = []
 
     async def fetch_todos(self) -> None:

@@ -1,4 +1,4 @@
-from .todo_view import TodoView
+from view.todo_view import TodoView
 
 __all__ = [
     "TodoView"

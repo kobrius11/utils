@@ -1,6 +1,6 @@
 from typing import Annotated
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Header, Query, Response, Request, HTTPException
+from fastapi import FastAPI, Header, Query, Response, Request, HTTPException, Depends
 from .src.db.sqlite import db, init_db
 from .src.db.controller import TodoController
 from .src.db.service import TodoService
@@ -39,28 +39,13 @@ async def root(
     return {"msg": "Invalid Crediantials"}
 
 @app.get("/todos")
-async def todos(
+async def get_todos(
+    todo_controller=todo_controller
     ):
     try:
         init_db()
-        result = await todo_controller.start_fetch_todos()
-        # Assuming your view has a method to retrieve todos after they're fetched
-        return result # Method to get the list of todos from the view
+        todos = await todo_controller.model.todo_service.try_get_todos()
+        return todo_controller.view.show_todos(todos)
     except Exception as e:
         todo_controller.update_view_with_error_message(str(e))
         raise HTTPException(status_code=500, detail="Error fetching todos")
-
-
-
-# @app.get("/login")
-# async def root(
-#         username: Annotated[str | None, Header()] = None,
-#         password: Annotated[str | None, Header()] = None,
-#     ):
-#     db = DBCONN.connect_db("users")
-#     user_password = db.select("users", username).fetchone()[0]
-#     if user_password == password:
-#         return {"msg": f"Welcome Back! {username}"}
-    
-#     return {"msg": "Invalid Crediantials"}
-

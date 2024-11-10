@@ -11,5 +11,5 @@ class AbstractRequest(ABC):
         raise NotImplementedError("")
     
 class Request(AbstractRequest):
-
+    pass
     

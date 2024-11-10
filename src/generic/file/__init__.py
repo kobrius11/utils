@@ -1,5 +1,5 @@
-from .file_handler import FileHandler
-from .file_handler_buidler import AbstracFileBuilder
+from src.generic.file.file_handler import FileHandler
+from src.generic.file.file_handler_buidler import AbstracFileBuilder
 
 __all__ = [
     "FileHandler",
